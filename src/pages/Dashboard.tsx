@@ -72,12 +72,11 @@ const createCustomIcon = (status: string) => {
 };
 
 export default function Dashboard() {
-  const { isLoading: authLoading, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
   const sensors = useQuery(api.sensors.list);
   const alerts = useQuery(api.alerts.list, {});
 
-  if (!sensors || !alerts) {
+  if (sensors === undefined || alerts === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -109,11 +108,6 @@ export default function Dashboard() {
                 <AlertTriangle className="h-4 w-4 mr-2" />
                 Alerts
               </Button>
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-sm font-medium">{user?.name?.[0] || "U"}</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
