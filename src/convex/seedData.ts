@@ -1,9 +1,34 @@
 import { mutation } from "./_generated/server";
 
+export const cleanup = mutation({
+  args: {},
+  handler: async (ctx) => {
+    // Delete all sensors
+    const sensors = await ctx.db.query("sensors").collect();
+    for (const sensor of sensors) {
+      await ctx.db.delete(sensor._id);
+    }
+
+    // Delete all readings
+    const readings = await ctx.db.query("readings").collect();
+    for (const reading of readings) {
+      await ctx.db.delete(reading._id);
+    }
+
+    // Delete all alerts
+    const alerts = await ctx.db.query("alerts").collect();
+    for (const alert of alerts) {
+      await ctx.db.delete(alert._id);
+    }
+
+    return { success: true, message: "All data cleaned up successfully" };
+  },
+});
+
 export const seed = mutation({
   args: {},
   handler: async (ctx) => {
-    // Create sensors
+    // Create exactly 5 sensors
     const sensor1 = await ctx.db.insert("sensors", {
       siteId: "CWC-001",
       name: "Krishna Bridge",
@@ -60,7 +85,21 @@ export const seed = mutation({
       thresholds: { normal: 40.0, warning: 45.0, danger: 48.0 },
     });
 
-    // Create historical readings
+    const sensor5 = await ctx.db.insert("sensors", {
+      siteId: "CWC-005",
+      name: "Brahmaputra Station",
+      basin: "Brahmaputra",
+      lat: 26.2,
+      lon: 91.7,
+      level: 42.8,
+      battery: 85,
+      signal: 90,
+      status: "Normal",
+      lastUpdated: Date.now(),
+      thresholds: { normal: 45.0, warning: 48.0, danger: 52.0 },
+    });
+
+    // Create historical readings for each sensor
     const now = Date.now();
     for (let i = 0; i < 24; i++) {
       await ctx.db.insert("readings", {
@@ -84,6 +123,14 @@ export const seed = mutation({
         level: 54.0 + Math.random() * 2,
         battery: 92 - i * 0.05,
         signal: 86 + Math.random() * 4,
+        timestamp: now - i * 3600000,
+      });
+
+      await ctx.db.insert("readings", {
+        sensorId: sensor5,
+        level: 41.5 + Math.random() * 2,
+        battery: 85 - i * 0.08,
+        signal: 88 + Math.random() * 4,
         timestamp: now - i * 3600000,
       });
     }
@@ -119,6 +166,6 @@ export const seed = mutation({
       timestamp: now - 3600000,
     });
 
-    return { success: true, message: "Sample data created successfully" };
+    return { success: true, message: "Sample data created successfully with 5 sensors" };
   },
 });
