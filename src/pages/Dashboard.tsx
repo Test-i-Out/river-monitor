@@ -77,13 +77,7 @@ export default function Dashboard() {
   const sensors = useQuery(api.sensors.list);
   const alerts = useQuery(api.alerts.list, {});
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      navigate("/auth");
-    }
-  }, [authLoading, isAuthenticated, navigate]);
-
-  if (authLoading || !sensors || !alerts) {
+  if (!sensors || !alerts) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

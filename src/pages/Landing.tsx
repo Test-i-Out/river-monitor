@@ -32,10 +32,10 @@ export default function Landing() {
               </div>
             </div>
             <Button
-              onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
+              onClick={() => navigate("/dashboard")}
               size="lg"
             >
-              {isAuthenticated ? "Dashboard" : "Get Started"}
+              Dashboard
             </Button>
           </div>
         </div>
@@ -65,10 +65,10 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
+              onClick={() => navigate("/dashboard")}
               className="text-lg px-8"
             >
-              {isAuthenticated ? "Go to Dashboard" : "Get Started"}
+              Go to Dashboard
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8">
               Learn More
@@ -175,10 +175,10 @@ export default function Landing() {
           </p>
           <Button
             size="lg"
-            onClick={() => navigate(isAuthenticated ? "/dashboard" : "/auth")}
+            onClick={() => navigate("/dashboard")}
             className="text-lg px-8"
           >
-            {isAuthenticated ? "Go to Dashboard" : "Get Started Now"}
+            Go to Dashboard
           </Button>
         </motion.div>
       </section>

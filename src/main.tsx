@@ -49,7 +49,6 @@ createRoot(document.getElementById("root")!).render(
           <RouteSyncer />
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/auth" element={<AuthPage redirectAfterAuth="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/site/:siteId" element={<SiteDetail />} />
             <Route path="/alerts" element={<Alerts />} />

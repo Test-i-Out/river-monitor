@@ -72,13 +72,7 @@ export default function SiteDetail() {
     sensor?._id ? { sensorId: sensor._id, timeRange } : "skip"
   );
 
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      navigate("/auth");
-    }
-  }, [authLoading, isAuthenticated, navigate]);
-
-  if (authLoading || sensor === undefined || readings === undefined) {
+  if (sensor === undefined || readings === undefined) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
