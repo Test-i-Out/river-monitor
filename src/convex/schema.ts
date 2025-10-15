@@ -32,12 +32,42 @@ const schema = defineSchema(
       role: v.optional(roleValidator), // role of the user. do not remove
     }).index("email", ["email"]), // index for the email. do not remove or modify
 
-    // add other tables here
+    sensors: defineTable({
+      siteId: v.string(),
+      name: v.string(),
+      basin: v.string(),
+      lat: v.number(),
+      lon: v.number(),
+      level: v.union(v.number(), v.null()),
+      battery: v.number(),
+      signal: v.number(),
+      status: v.string(),
+      lastUpdated: v.number(),
+      thresholds: v.object({
+        normal: v.number(),
+        warning: v.number(),
+        danger: v.number(),
+      }),
+    }).index("by_site_id", ["siteId"]),
 
-    // tableName: defineTable({
-    //   ...
-    //   // table fields
-    // }).index("by_field", ["field"])
+    readings: defineTable({
+      sensorId: v.id("sensors"),
+      level: v.number(),
+      battery: v.number(),
+      signal: v.number(),
+      timestamp: v.number(),
+    }).index("by_sensor_and_time", ["sensorId", "timestamp"]),
+
+    alerts: defineTable({
+      sensorId: v.id("sensors"),
+      siteName: v.string(),
+      severity: v.string(),
+      level: v.number(),
+      message: v.string(),
+      status: v.string(),
+      timestamp: v.number(),
+      acknowledgedAt: v.optional(v.number()),
+    }).index("by_status", ["status"]),
   },
   {
     schemaValidation: false,
